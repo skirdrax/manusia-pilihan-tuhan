@@ -1,28 +1,30 @@
-@extends('layouts.auth', ['title' => 'Masuk Admin & Pengelola'])
+@extends('layouts.auth', ['title' => 'Masuk Pelanggan'])
 
 @section('content')
 <div style="margin-bottom: 22px; text-align: center;">
-    <span style="display: inline-block; font-size: 10px; font-weight: 700; color: #176b53; background: #e8f3ed; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; margin-bottom: 8px;">
-        PORTAL PENGELOLA HERBAL
-    </span>
-    <h2 style="margin: 0 0 4px; font-family: Manrope, sans-serif; font-size: 22px; font-weight: 800; color: #202c29;">Masuk Sistem</h2>
-    <p style="margin: 0; color: #78827d; font-size: 13px;">Kelola stok obat herbal, transaksi kasir, dan pengiriman kurir</p>
+    <div style="display: flex; justify-content: center; margin-bottom: 8px;">
+        <span style="font-size: 11px; font-weight: 700; color: #176b53; background: #e8f3ed; padding: 3px 10px; border-radius: 99px; text-transform: uppercase;">
+            PORTAL KHUSUS PELANGGAN
+        </span>
+    </div>
+    <h2 style="margin: 0 0 4px; font-family: Manrope, sans-serif; font-size: 22px; font-weight: 800; color: #202c29;">Masuk Akun Pelanggan</h2>
+    <p style="margin: 0; color: #78827d; font-size: 13px;">Silakan masuk untuk mengakses katalog obat herbal & lacak pengiriman paket Anda</p>
 </div>
 
 <form method="POST" action="{{ route('login') }}">
     @csrf
 
     <div class="form-group">
-        <label for="email">Alamat Email</label>
+        <label for="email">Alamat Email Pelanggan</label>
         <input 
             type="email" 
             name="email" 
             id="email" 
-            value="{{ old('email', 'admin@kel3.test') }}" 
+            value="{{ old('email', 'user@kel3.test') }}" 
             required 
             autofocus 
             autocomplete="username" 
-            placeholder="admin@kel3.test"
+            placeholder="user@kel3.test"
         >
     </div>
 
@@ -47,12 +49,12 @@
     </div>
 
     <button type="submit" class="button button-primary" style="width: 100%; min-height: 44px; font-size: 13px; font-weight: 700; border-radius: 6px;">
-        Masuk ke Sistem Herbal
+        Masuk Sebagai Pelanggan
     </button>
 </form>
 
 <div style="margin-top: 18px; text-align: center; font-size: 12px; color: #78827d;">
-    Ingin membuat akun pelanggan baru?
+    Belum memiliki akun pelanggan?
     <a href="{{ route('register') }}" style="color: #176b53; font-weight: 700;">Daftar akun di sini</a>
 </div>
 @endsection
