@@ -56,3 +56,4 @@
     <a href="{{ route('dashboard') }}" style="color: #176b53; font-weight: 700;">Kembali ke Halaman Utama</a>
 </div>
 @endsection
+
