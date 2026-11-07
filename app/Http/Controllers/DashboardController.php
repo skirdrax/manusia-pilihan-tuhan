@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kurir;
 use App\Models\Medicine;
 use App\Models\Paket;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -14,6 +15,26 @@ class DashboardController extends Controller
 
     public function __invoke(): View
     {
+        $user = Auth::user();
+
+        // 1. Tampilan Khusus Role 'user' (Pelanggan)
+        if ($user && $user->role === 'user') {
+            $medicines = Medicine::where('stock', '>', 0)->latest()->get();
+            return view('dashboard-user', compact('medicines'));
+        }
+
+        // 2. Tampilan Khusus Role 'kurir' (Driver Pengantar)
+        if ($user && $user->role === 'kurir') {
+            // Cocokkan kurir berdasarkan nama atau ambil paket yang ditugaskan
+            $kurir = Kurir::where('nama', 'like', '%' . $user->name . '%')->first();
+            $myPakets = Paket::when($kurir, fn($q) => $q->where('kurir_id', $kurir->id))
+                ->latest()
+                ->get();
+
+            return view('dashboard-kurir', compact('myPakets'));
+        }
+
+        // 3. Tampilan Utama Role 'admin' (Pengelola Sistem Lengkap)
         $soon = today()->addDays(self::EXPIRING_DAYS);
 
         // Statistik Produk Obat Herbal dari DB
@@ -37,7 +58,7 @@ class DashboardController extends Controller
         $categories = Medicine::selectRaw('category, COUNT(*) as total')
             ->groupBy('category')->orderByDesc('total')->limit(6)->get();
 
-        // Statistik Pengiriman & Logistik Herbal dari DB (tabel paket & kurir)
+        // Statistik Pengiriman & Logistik Herbal dari DB
         $paketStats = [
             'total'    => Paket::count(),
             'pending'  => Paket::where('status', 'pending')->count(),
