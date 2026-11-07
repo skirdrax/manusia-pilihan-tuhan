@@ -10,39 +10,32 @@
 @section('content')
 <!-- Banner Selamat Datang Pelanggan -->
 <div style="background: linear-gradient(135deg, #203b33 0%, #176b53 100%); border-radius: 10px; padding: 28px 32px; color: #fff; margin-bottom: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
-    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-        <div>
-            <span style="font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; background: rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 99px;">
-                AKUN PELANGGAN RESMI
-            </span>
-            <h1 style="font-family: Manrope, sans-serif; font-size: 26px; font-weight: 800; margin: 10px 0 6px;">
-                Selamat Datang, {{ auth()->user()->name }}! 🌿
-            </h1>
-            <p style="margin: 0; font-size: 13px; color: #d4e8df; max-width: 600px; line-height: 1.5;">
-                Temukan aneka obat herbal alami berkualitas tinggi serta pantau posisi pesanan paket pengiriman Anda secara geospasial real-time dari pusat gudang Indramayu.
-            </p>
-        </div>
-        <div>
-            <a href="{{ route('gis.index') }}" class="button" style="background: #ffffff; color: #176b53; font-weight: 700; border-radius: 6px; padding: 10px 18px;">
-                🗺 Cek Peta Ekspedisi GIS
-            </a>
-        </div>
+    <div>
+        <span style="font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; background: rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 99px;">
+            PORTAL PELANGGAN
+        </span>
+        <h1 style="font-family: Manrope, sans-serif; font-size: 26px; font-weight: 800; margin: 10px 0 6px;">
+            Selamat Datang, {{ auth()->user()->name }}! 🌿
+        </h1>
+        <p style="margin: 0; font-size: 13px; color: #d4e8df; max-width: 600px; line-height: 1.5;">
+            Temukan aneka obat herbal alami pilihan berkualitas tinggi dan pantau status pengiriman paket pesanan Anda langsung ke rumah.
+        </p>
     </div>
 </div>
 
 <!-- Kotak Cek Resi Cepat Pelanggan -->
 <div style="background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 22px; margin-bottom: 28px;">
     <h2 style="font-family: Manrope, sans-serif; font-size: 16px; font-weight: 800; color: #202c29; margin: 0 0 4px;">
-        🔍 Lacak Status & Posisi Paket Herbal Anda
+        🔍 Lacak Status Paket Herbal Anda
     </h2>
     <p style="margin: 0 0 16px; font-size: 12px; color: var(--muted);">
-        Masukkan nomor resi pengiriman untuk mengetahui status dan koordinat kurir.
+        Masukkan nomor resi pengiriman Anda untuk melihat status perjalanan paket.
     </p>
 
     <form method="GET" action="{{ route('paket.index') }}" style="display: flex; gap: 10px; max-width: 550px;">
         <input type="text" name="q" placeholder="Masukkan Nomor Resi (misal: RESI-001, RESI-599)..." required style="border-radius: 6px;">
         <button type="submit" class="button button-primary" style="white-space: nowrap;">
-            Lacak Paket
+            Cari Paket
         </button>
     </form>
 </div>
@@ -101,4 +94,3 @@
     @endforelse
 </div>
 @endsection
-

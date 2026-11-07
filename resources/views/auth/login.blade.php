@@ -1,9 +1,12 @@
-@extends('layouts.auth', ['title' => 'Masuk'])
+@extends('layouts.auth', ['title' => 'Masuk Admin & Pengelola'])
 
 @section('content')
 <div style="margin-bottom: 22px; text-align: center;">
-    <h2 style="margin: 0 0 4px; font-family: Manrope, sans-serif; font-size: 22px; font-weight: 800; color: #202c29;">Masuk Akun</h2>
-    <p style="margin: 0; color: #78827d; font-size: 13px;">Silakan masuk untuk mengakses katalog obat herbal & lacak paket</p>
+    <span style="display: inline-block; font-size: 10px; font-weight: 700; color: #176b53; background: #e8f3ed; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; margin-bottom: 8px;">
+        PORTAL PENGELOLA HERBAL
+    </span>
+    <h2 style="margin: 0 0 4px; font-family: Manrope, sans-serif; font-size: 22px; font-weight: 800; color: #202c29;">Masuk Sistem</h2>
+    <p style="margin: 0; color: #78827d; font-size: 13px;">Kelola stok obat herbal, transaksi kasir, dan pengiriman kurir</p>
 </div>
 
 <form method="POST" action="{{ route('login') }}">
@@ -15,11 +18,11 @@
             type="email" 
             name="email" 
             id="email" 
-            value="{{ old('email', 'user@kel3.test') }}" 
+            value="{{ old('email', 'admin@kel3.test') }}" 
             required 
             autofocus 
             autocomplete="username" 
-            placeholder="nama@email.com"
+            placeholder="admin@kel3.test"
         >
     </div>
 
@@ -44,12 +47,12 @@
     </div>
 
     <button type="submit" class="button button-primary" style="width: 100%; min-height: 44px; font-size: 13px; font-weight: 700; border-radius: 6px;">
-        Masuk Sekarang
+        Masuk ke Sistem Herbal
     </button>
 </form>
 
 <div style="margin-top: 18px; text-align: center; font-size: 12px; color: #78827d;">
-    Belum memiliki akun?
-    <a href="{{ route('register') }}" style="color: #176b53; font-weight: 700;">Daftar akun baru</a>
+    Ingin membuat akun pelanggan baru?
+    <a href="{{ route('register') }}" style="color: #176b53; font-weight: 700;">Daftar akun di sini</a>
 </div>
 @endsection
