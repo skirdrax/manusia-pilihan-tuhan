@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\RoleSwitchController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GisController;
 use App\Http\Controllers\MedicineController;
@@ -8,7 +9,7 @@ use App\Http\Controllers\PaketController;
 use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
 
-// Guest Routes (Login & Register - Tema Hijau Apotek)
+// Guest Routes (Login & Register Bersih untuk User)
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
@@ -17,10 +18,13 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
 });
 
-// Authenticated Routes (CRUD Obat, Penjualan, Paket Distribusi, dan Peta GIS)
+// Authenticated Routes (Dashboard, Switch Role, Operasional Herbal & GIS)
 Route::middleware('auth')->group(function () {
-    // Dashboard Apotek Herbal (desain Liyah)
+    // Dashboard Utama (otomatis menyesuaikan role user, kurir, admin)
     Route::get('/', DashboardController::class)->name('dashboard');
+
+    // Tombol Cepat Pindah Peran di Kanan Atas
+    Route::get('/switch-role/{role}', [RoleSwitchController::class, 'switch'])->name('switch.role');
 
     // Manajemen Obat Herbal (CRUD)
     Route::resource('medicines', MedicineController::class)->except('show');
@@ -34,7 +38,7 @@ Route::middleware('auth')->group(function () {
     // Manajemen Pengiriman Paket Herbal (CRUD Lengkap Tambah, Edit, Hapus)
     Route::resource('paket', PaketController::class)->except('show');
 
-    // Peta GIS Distribusi & Pengiriman Herbal (Leaflet dengan Inspector Latitude & Longitude)
+    // Peta GIS Distribusi & Pengiriman Herbal (Leaflet dengan Titik Indramayu & Jarak)
     Route::get('/gis', [GisController::class, 'index'])->name('gis.index');
     Route::get('/api/gis/points', [GisController::class, 'points'])->name('api.gis.points');
     Route::get('/api/gis/regions', [GisController::class, 'regions'])->name('api.gis.regions');
