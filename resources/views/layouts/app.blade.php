@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Apotek Sembuh') | Apotek Kelompok 13</title>
+    <title>@yield('title', 'Apotek Kelompok 13') | Apotek Kelompok 13</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
         <aside class="sidebar">
             <a class="brand" href="{{ route('dashboard') }}">
                 <span class="brand-mark">+</span>
-                <span><strong>sembuh</strong><small>APOTEK & KLINIK</small></span>
+                <span><strong>Kelompok 13</strong><small>APOTEK & KLINIK</small></span>
             </a>
             <div class="nav-label">OPERASIONAL</div>
             <nav class="main-nav" aria-label="Navigasi utama">
