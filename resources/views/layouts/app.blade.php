@@ -26,9 +26,6 @@
                 <a class="nav-link {{ request()->routeIs('medicines.*') ? 'active' : '' }}" href="{{ route('medicines.index') }}">
                     <span class="nav-icon">▦</span> Data obat
                 </a>
-                <a class="nav-link {{ request()->routeIs('sales.*') ? 'active' : '' }}" href="{{ route('sales.index') }}">
-                    <span class="nav-icon">↗</span> Penjualan
-                </a>
             </nav>
             <div class="sidebar-bottom">
                 <span class="status-dot"></span>
