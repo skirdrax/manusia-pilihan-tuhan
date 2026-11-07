@@ -1,5 +1,5 @@
 # 🌿 Sistem Manajemen Obat Herbal & Distribusi Geospasial (GIS)
-### Proyek Praktikum Web Tingkat Menengah — Kelompok 3
+### Proyek Intermediate 3 — Kelompok 3
 
 Aplikasi web terintegrasi berbasis **Laravel 11** dan **MySQL** untuk manajemen produk obat herbal, transaksi kasir, inventaris gudang, serta pemantauan logistik pengiriman paket berbasis sistem informasi geografis (**GIS Leaflet**).
 
