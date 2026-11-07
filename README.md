@@ -9,10 +9,10 @@ Aplikasi web terintegrasi berbasis **Laravel 11** dan **MySQL** untuk manajemen 
 
 | No | Nama Anggota | Peran / Kontribusi |
 |:---:|:---|:---|
-| 1 | **Ardra Sakhi** | Database Architecture, Backend Integration, Autentikasi & GIS |
+| 1 | **Sakhi Ardra Handaru** | Database Architecture, Konfigurasi Environment, Autentikasi & GIS |
 | 2 | **Nur Laeliyah** | Desain Antarmuka (UI/UX) Apotek Herbal, Modul Obat & Transaksi |
-| 3 | **M. Fathurrahman Attar** | Sistem Geospasial (GIS), Routing, & Endpoint Pemetaan |
-| 4 | **Anti** | Konfigurasi Environment, Pengujian Sistem & QA |
+| 3 | **Anti** | , Backend Integration Pengujian Sistem & QA |
+| 4 | **M. Fathurrahman Attar** | Sistem Geospasial (GIS), Routing, & Endpoint Pemetaan |
 
 ---
 
