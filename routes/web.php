@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Auth\RoleSwitchController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GisController;
 use App\Http\Controllers\MedicineController;
@@ -9,7 +8,7 @@ use App\Http\Controllers\PaketController;
 use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
 
-// Guest Routes (Login & Register Bersih untuk User)
+// Guest Routes (Login Pelanggan & Register Pelanggan)
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
@@ -18,13 +17,14 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
 });
 
-// Authenticated Routes (Dashboard, Switch Role, Operasional Herbal & GIS)
-Route::middleware('auth')->group(function () {
-    // Dashboard Utama (otomatis menyesuaikan role user, kurir, admin)
-    Route::get('/', DashboardController::class)->name('dashboard');
+// Portal Login Khusus Petugas (Admin & Kurir) - Bisa diakses saat butuh masuk petugas
+Route::get('/login-staff', [AuthController::class, 'showStaffLogin'])->name('login.staff');
+Route::post('/login-staff', [AuthController::class, 'staffLogin'])->name('login.staff.submit');
 
-    // Tombol Cepat Pindah Peran di Kanan Atas
-    Route::get('/switch-role/{role}', [RoleSwitchController::class, 'switch'])->name('switch.role');
+// Authenticated Routes (Dashboard, Operasional Herbal & GIS)
+Route::middleware('auth')->group(function () {
+    // Dashboard Utama (otomatis mendeteksi role user, kurir, admin)
+    Route::get('/', DashboardController::class)->name('dashboard');
 
     // Manajemen Obat Herbal (CRUD)
     Route::resource('medicines', MedicineController::class)->except('show');

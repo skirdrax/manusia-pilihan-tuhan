@@ -98,24 +98,19 @@
             <header class="topbar">
                 <div class="breadcrumb">Obat Herbal <span>/</span> @yield('section', 'Ringkasan')</div>
                 
-                <div style="display: flex; align-items: center; gap: 16px;">
-                    <!-- Tombol Cepat Beralih Mode di Kanan Atas -->
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <!-- Tombol Masuk Petugas (Admin / Kurir) di Kanan Atas Khusus Dashboard User -->
                     @auth
-                        <div style="display: flex; align-items: center; gap: 6px; background: #f0f4f2; padding: 4px 6px; border-radius: 6px; border: 1px solid #dce8e1;">
-                            <span style="font-size: 10px; font-weight: 700; color: #69746e; text-transform: uppercase; margin-right: 4px;">Mode:</span>
-                            
-                            <a href="{{ route('switch.role', 'admin') }}" style="padding: 4px 9px; font-size: 11px; font-weight: 700; border-radius: 4px; text-decoration: none; transition: all 0.15s; {{ auth()->user()->role === 'admin' ? 'background: #176b53; color: #fff;' : 'background: #fff; color: #176b53; border: 1px solid #c2e2d3;' }}">
-                                🛡️ Admin
+                        @if (auth()->user()->role === 'user')
+                            <a href="{{ route('login.staff') }}" class="button button-light" style="min-height: 32px; padding: 0 12px; font-size: 11px; font-weight: 700; color: #176b53; border-color: #c2e2d3; background: #f0f7f3; display: inline-flex; align-items: center; gap: 6px;">
+                                <span>🔐</span>
+                                <span>Login Admin / Kurir</span>
                             </a>
-
-                            <a href="{{ route('switch.role', 'kurir') }}" style="padding: 4px 9px; font-size: 11px; font-weight: 700; border-radius: 4px; text-decoration: none; transition: all 0.15s; {{ auth()->user()->role === 'kurir' ? 'background: #0284c7; color: #fff;' : 'background: #fff; color: #0284c7; border: 1px solid #bae6fd;' }}">
-                                🚚 Kurir
-                            </a>
-
-                            <a href="{{ route('switch.role', 'user') }}" style="padding: 4px 9px; font-size: 11px; font-weight: 700; border-radius: 4px; text-decoration: none; transition: all 0.15s; {{ auth()->user()->role === 'user' ? 'background: #ea580c; color: #fff;' : 'background: #fff; color: #ea580c; border: 1px solid #fed7aa;' }}">
-                                🌿 User
-                            </a>
-                        </div>
+                        @else
+                            <div style="display: inline-flex; align-items: center; gap: 6px; background: #e8f3ed; padding: 4px 10px; border-radius: 4px; border: 1px solid #c2e2d3; font-size: 11px; font-weight: 700; color: #176b53;">
+                                <span>{{ auth()->user()->role === 'admin' ? '🛡️ Portal Admin' : '🚚 Portal Kurir' }}</span>
+                            </div>
+                        @endif
                     @endauth
 
                     <div class="topbar-meta"><span class="today-mark"></span>{{ now()->translatedFormat('l, d F Y') }}</div>
