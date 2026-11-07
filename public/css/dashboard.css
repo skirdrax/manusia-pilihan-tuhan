@@ -1,0 +1,27 @@
+/* Tambahan untuk halaman dashboard; memakai variabel dari apotek.css */
+.heading-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.metrics-four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.metric strong { font-variant-numeric: tabular-nums; }
+.delta-up { color: #26714f; font-weight: 700; }
+.delta-down { color: #a55732; font-weight: 700; }
+.dash-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
+.panel { min-width: 0; padding: 20px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); }
+.panel-wide { grid-column: span 2; }
+.panel h2 { margin: 0 0 14px; font-family: Manrope, sans-serif; font-size: 15px; font-weight: 800; }
+.chart-box { position: relative; height: 250px; }
+.panel-empty { margin: 0; padding: 14px 0; color: var(--muted); font-size: 12px; }
+.plain-table td { height: 48px; }
+.plain-table th:first-child, .plain-table td:first-child { padding-left: 0; }
+.plain-table th:last-child, .plain-table td:last-child { padding-right: 0; }
+.align-right { text-align: right; }
+.list-title { margin: 14px 0 4px; color: #59645f; font-size: 11px; font-weight: 700; }
+.list-title:first-of-type { margin-top: 0; }
+.attention-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 0; border-bottom: 1px solid #edf0ed; font-size: 12px; }
+.attention-row:hover span:first-child { color: var(--green); }
+.attention-row:last-of-type { border-bottom: 0; }
+:is(a, button):focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+@media (max-width: 1100px) {
+    .metrics-four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .dash-grid { grid-template-columns: 1fr; }
+    .panel-wide { grid-column: auto; }
+}

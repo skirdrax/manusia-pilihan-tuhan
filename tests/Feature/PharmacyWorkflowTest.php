@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Medicine;
 use App\Models\Sale;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -11,40 +12,68 @@ class PharmacyWorkflowTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected User $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create([
+            'role' => 'admin',
+        ]);
+    }
+
     public function test_inventory_and_sales_pages_render(): void
     {
-        $this->get(route('medicines.index'))->assertOk()->assertSee('Data obat');
-        $this->get(route('sales.index'))->assertOk()->assertSee('Riwayat transaksi');
-        $this->get(route('sales.create'))->assertOk()->assertSee('Belum ada obat yang dapat dijual');
+        $this->actingAs($this->user)
+            ->get(route('medicines.index'))
+            ->assertOk()
+            ->assertSee('Data obat');
+
+        $this->actingAs($this->user)
+            ->get(route('sales.index'))
+            ->assertOk()
+            ->assertSee('Riwayat transaksi');
+
+        $this->actingAs($this->user)
+            ->get(route('sales.create'))
+            ->assertOk()
+            ->assertSee('Belum ada obat yang dapat dijual');
     }
 
     public function test_medicine_can_be_created_updated_and_deleted(): void
     {
-        $this->post(route('medicines.store'), [
-            'sku' => 'OB-001',
-            'name' => 'Paracetamol',
-            'category' => 'Analgesik',
-            'unit' => 'strip',
-            'purchase_price' => 5000,
-            'selling_price' => 7500,
-            'stock' => 20,
-        ])->assertRedirect(route('medicines.index'));
+        $this->actingAs($this->user)
+            ->post(route('medicines.store'), [
+                'sku' => 'OB-001',
+                'name' => 'Paracetamol',
+                'category' => 'Analgesik',
+                'unit' => 'strip',
+                'purchase_price' => 5000,
+                'selling_price' => 7500,
+                'stock' => 20,
+            ])->assertRedirect(route('medicines.index'));
 
         $medicine = Medicine::where('sku', 'OB-001')->firstOrFail();
         $this->assertDatabaseHas('medicines', ['id' => $medicine->id, 'stock' => 20]);
 
-        $this->put(route('medicines.update', $medicine), [
-            'sku' => 'OB-001',
-            'name' => 'Paracetamol 500 mg',
-            'category' => 'Analgesik',
-            'unit' => 'strip',
-            'purchase_price' => 5000,
-            'selling_price' => 8000,
-            'stock' => 18,
-        ])->assertRedirect(route('medicines.index'));
+        $this->actingAs($this->user)
+            ->put(route('medicines.update', $medicine), [
+                'sku' => 'OB-001',
+                'name' => 'Paracetamol 500 mg',
+                'category' => 'Analgesik',
+                'unit' => 'strip',
+                'purchase_price' => 5000,
+                'selling_price' => 8000,
+                'stock' => 18,
+            ])->assertRedirect(route('medicines.index'));
 
         $this->assertDatabaseHas('medicines', ['id' => $medicine->id, 'name' => 'Paracetamol 500 mg', 'stock' => 18]);
-        $this->delete(route('medicines.destroy', $medicine))->assertRedirect(route('medicines.index'));
+        
+        $this->actingAs($this->user)
+            ->delete(route('medicines.destroy', $medicine))
+            ->assertRedirect(route('medicines.index'));
+            
         $this->assertDatabaseMissing('medicines', ['id' => $medicine->id]);
     }
 
@@ -59,11 +88,12 @@ class PharmacyWorkflowTest extends TestCase
             'stock' => 8,
         ]);
 
-        $response = $this->post(route('sales.store'), [
-            'customer_name' => 'Pelanggan Uji',
-            'payment_method' => 'tunai',
-            'items' => [['medicine_id' => $medicine->id, 'quantity' => 3]],
-        ]);
+        $response = $this->actingAs($this->user)
+            ->post(route('sales.store'), [
+                'customer_name' => 'Pelanggan Uji',
+                'payment_method' => 'tunai',
+                'items' => [['medicine_id' => $medicine->id, 'quantity' => 3]],
+            ]);
 
         $sale = Sale::firstOrFail();
         $response->assertRedirect(route('sales.show', $sale));
@@ -83,10 +113,12 @@ class PharmacyWorkflowTest extends TestCase
             'stock' => 2,
         ]);
 
-        $this->from(route('sales.create'))->post(route('sales.store'), [
-            'payment_method' => 'tunai',
-            'items' => [['medicine_id' => $medicine->id, 'quantity' => 3]],
-        ])->assertRedirect(route('sales.create'))->assertSessionHasErrors('items');
+        $this->actingAs($this->user)
+            ->from(route('sales.create'))
+            ->post(route('sales.store'), [
+                'payment_method' => 'tunai',
+                'items' => [['medicine_id' => $medicine->id, 'quantity' => 3]],
+            ])->assertRedirect(route('sales.create'))->assertSessionHasErrors('items');
 
         $this->assertDatabaseHas('medicines', ['id' => $medicine->id, 'stock' => 2]);
         $this->assertDatabaseCount('sales', 0);

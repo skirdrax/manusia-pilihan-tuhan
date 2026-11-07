@@ -10,10 +10,10 @@ class ExampleTest extends TestCase
     /**
      * A basic test example.
      */
-    public function test_the_homepage_redirects_to_the_medicine_inventory(): void
+    public function test_the_homepage_redirects_to_the_login_page_for_guests(): void
     {
         $response = $this->get('/');
 
-        $response->assertRedirect(route('medicines.index'));
+        $response->assertRedirect(route('login'));
     }
 }

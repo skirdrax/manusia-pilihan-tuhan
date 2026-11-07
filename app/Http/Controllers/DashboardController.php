@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kurir;
 use App\Models\Medicine;
+use App\Models\Paket;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -14,6 +16,7 @@ class DashboardController extends Controller
     {
         $soon = today()->addDays(self::EXPIRING_DAYS);
 
+        // Statistik Produk Obat Herbal dari DB
         $stats = Medicine::selectRaw(
             'COUNT(*) as total,
              COALESCE(SUM(stock), 0) as units,
@@ -34,6 +37,17 @@ class DashboardController extends Controller
         $categories = Medicine::selectRaw('category, COUNT(*) as total')
             ->groupBy('category')->orderByDesc('total')->limit(6)->get();
 
+        // Statistik Pengiriman & Logistik Herbal dari DB (tabel paket & kurir)
+        $paketStats = [
+            'total'    => Paket::count(),
+            'pending'  => Paket::where('status', 'pending')->count(),
+            'dikirim'  => Paket::where('status', 'dikirim')->count(),
+            'terkirim' => Paket::where('status', 'terkirim')->count(),
+            'kurir'    => Kurir::count(),
+        ];
+
+        $latestPaket = Paket::with('kurir')->latest()->take(5)->get();
+
         return view('dashboard', [
             'total' => $total,
             'units' => (int) $stats->units,
@@ -48,6 +62,8 @@ class DashboardController extends Controller
             'latest' => Medicine::latest('id')->limit(5)->get(),
             'lowStockAt' => self::LOW_STOCK,
             'expiringDays' => self::EXPIRING_DAYS,
+            'paketStats' => $paketStats,
+            'latestPaket' => $latestPaket,
         ]);
     }
 }
