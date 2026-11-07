@@ -19,28 +19,60 @@
                 <span><strong>Obat Herbal</strong><small>KELOMPOK 3</small></span>
             </a>
             
-            <div class="nav-label">OPERASIONAL HERBAL</div>
-            <nav class="main-nav" aria-label="Navigasi operasional">
-                <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-                    <span class="nav-icon">◧</span> Dashboard
-                </a>
-                <a class="nav-link {{ request()->routeIs('medicines.*') ? 'active' : '' }}" href="{{ route('medicines.index') }}">
-                    <span class="nav-icon">🌿</span> Data Obat Herbal
-                </a>
-                <a class="nav-link {{ request()->routeIs('sales.*') ? 'active' : '' }}" href="{{ route('sales.index') }}">
-                    <span class="nav-icon">↗</span> Kasir & Penjualan
-                </a>
-            </nav>
+            @php
+                $userRole = auth()->user()->role ?? 'user';
+            @endphp
 
-            <div class="nav-label" style="margin-top: 24px;">LOGISTIK & DISTRIBUSI</div>
-            <nav class="main-nav" aria-label="Navigasi logistik">
-                <a class="nav-link {{ request()->routeIs('paket.*') ? 'active' : '' }}" href="{{ route('paket.index') }}">
-                    <span class="nav-icon">📦</span> Manajemen Paket
-                </a>
-                <a class="nav-link {{ request()->routeIs('gis.*') ? 'active' : '' }}" href="{{ route('gis.index') }}">
-                    <span class="nav-icon">🗺</span> Peta GIS Pengiriman
-                </a>
-            </nav>
+            @if ($userRole === 'admin')
+                <!-- Menu Lengkap untuk Admin -->
+                <div class="nav-label">OPERASIONAL HERBAL</div>
+                <nav class="main-nav" aria-label="Navigasi operasional">
+                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                        <span class="nav-icon">◧</span> Dashboard
+                    </a>
+                    <a class="nav-link {{ request()->routeIs('medicines.*') ? 'active' : '' }}" href="{{ route('medicines.index') }}">
+                        <span class="nav-icon">🌿</span> Data Obat Herbal
+                    </a>
+                    <a class="nav-link {{ request()->routeIs('sales.*') ? 'active' : '' }}" href="{{ route('sales.index') }}">
+                        <span class="nav-icon">↗</span> Kasir & Penjualan
+                    </a>
+                </nav>
+
+                <div class="nav-label" style="margin-top: 24px;">LOGISTIK & DISTRIBUSI</div>
+                <nav class="main-nav" aria-label="Navigasi logistik">
+                    <a class="nav-link {{ request()->routeIs('paket.*') ? 'active' : '' }}" href="{{ route('paket.index') }}">
+                        <span class="nav-icon">📦</span> Manajemen Paket
+                    </a>
+                    <a class="nav-link {{ request()->routeIs('gis.*') ? 'active' : '' }}" href="{{ route('gis.index') }}">
+                        <span class="nav-icon">🗺</span> Peta GIS Pengiriman
+                    </a>
+                </nav>
+            @elseif ($userRole === 'kurir')
+                <!-- Menu Khusus untuk Kurir Driver -->
+                <div class="nav-label">TUGAS PENGIRIMAN</div>
+                <nav class="main-nav" aria-label="Navigasi kurir">
+                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                        <span class="nav-icon">📋</span> Daftar Tugas Paket
+                    </a>
+                    <a class="nav-link {{ request()->routeIs('gis.*') ? 'active' : '' }}" href="{{ route('gis.index') }}">
+                        <span class="nav-icon">🗺</span> Peta Rute GIS
+                    </a>
+                </nav>
+            @else
+                <!-- Menu Bersih untuk User Pelanggan -->
+                <div class="nav-label">LAYANAN PELANGGAN</div>
+                <nav class="main-nav" aria-label="Navigasi pelanggan">
+                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                        <span class="nav-icon">🌿</span> Katalog Obat Herbal
+                    </a>
+                    <a class="nav-link {{ request()->routeIs('paket.*') ? 'active' : '' }}" href="{{ route('paket.index') }}">
+                        <span class="nav-icon">📦</span> Lacak Paket Saya
+                    </a>
+                    <a class="nav-link {{ request()->routeIs('gis.*') ? 'active' : '' }}" href="{{ route('gis.index') }}">
+                        <span class="nav-icon">🗺</span> Peta Ekspedisi GIS
+                    </a>
+                </nav>
+            @endif
 
             <div class="sidebar-bottom" style="display: flex; flex-direction: column; gap: 0.75rem;">
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -49,7 +81,10 @@
                 </div>
                 @auth
                     <div style="padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 0.75rem; color: #94a3b8;">{{ auth()->user()->name }} ({{ auth()->user()->role }})</span>
+                        <div>
+                            <span style="font-size: 0.75rem; color: #fff; font-weight: 600; display: block;">{{ auth()->user()->name }}</span>
+                            <span style="font-size: 0.6875rem; text-transform: uppercase; font-weight: 700; color: #79c696;">{{ auth()->user()->role }}</span>
+                        </div>
                         <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
                             @csrf
                             <button type="submit" style="background: none; border: none; color: #f87171; font-size: 0.75rem; cursor: pointer; text-decoration: underline;">Keluar</button>
