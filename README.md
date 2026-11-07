@@ -62,7 +62,7 @@ Aplikasi web terintegrasi berbasis **Laravel 11** dan **MySQL** untuk manajemen 
 ```bash
 git clone https://github.com/skirdrax/manusia-pilihan-tuhan.git
 cd manusia-pilihan-tuhan
-git checkout liyah
+git checkout main
 ```
 
 ### 2. Konfigurasi Environment
