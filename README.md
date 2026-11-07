@@ -1,59 +1,111 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🌿 Sistem Manajemen Obat Herbal & Distribusi Geospasial (GIS)
+### Proyek Praktikum Web Tingkat Menengah — Kelompok 3
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi web terintegrasi berbasis **Laravel 11** dan **MySQL** untuk manajemen produk obat herbal, transaksi kasir, inventaris gudang, serta pemantauan logistik pengiriman paket berbasis sistem informasi geografis (**GIS Leaflet**).
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 👥 Anggota Kelompok 3
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| No | Nama Anggota | Peran / Kontribusi |
+|:---:|:---|:---|
+| 1 | **Ardra Sakhi** | Database Architecture, Backend Integration, Autentikasi & GIS |
+| 2 | **Nur Laeliyah** | Desain Antarmuka (UI/UX) Apotek Herbal, Modul Obat & Transaksi |
+| 3 | **M. Fathurrahman Attar** | Sistem Geospasial (GIS), Routing, & Endpoint Pemetaan |
+| 4 | **Anti** | Konfigurasi Environment, Pengujian Sistem & QA |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🚀 Fitur Utama Sistem
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 1. 🔐 Autentikasi Pengguna & Hak Akses
+- Halaman **Login** dan **Registrasi** dengan tema visual **Deep Forest Green** yang elegan dan selaras dengan tema obat herbal.
+- Proteksi route berbasis sesi (`auth` & `guest`).
+- Manajemen peran pengguna: `admin`, `kurir`, dan `user`.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. 🌿 Manajemen Produk Obat Herbal (CRUD)
+- Katalog produk obat herbal alami (Minyak Habbatussauda, Madu Randu Hutan, Kapsul Temulawak, Sari Kurma, Pegagan, dsb).
+- Peringatan stok menipis (*low stock indicator*) dan pemantauan masa kedaluwarsa produk (*expiration tracker*).
+- Penghitungan valuasi inventaris otomatis berdasarkan harga beli riil.
 
-## Laravel Sponsors
+### 3. 💳 Transaksi Kasir & Penjualan Herbal
+- Pencatatan transaksi obat secara multi-item dengan kalkulasi subtotal dan total otomatis.
+- Pengurangan stok barang secara otomatis dan aman dalam transaksi database.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 4. 📦 Manajemen Pengiriman Paket
+- CRUD lengkap untuk data ekspedisi dan paket pengiriman obat herbal ke pelanggan.
+- Dilengkapi **Mini Map Picker** pada form tambah & ubah paket: cukup geser pin penanda di peta untuk mengisi koordinat **Latitude & Longitude** secara otomatis.
+- Penugasan armada kurir untuk masing-masing paket.
 
-### Premium Partners
+### 5. 🗺️ Pemantauan Geospasial (GIS Leaflet)
+- **Pusat Usaha**: Titik gudang operasional utama berpusat di **Indramayu, Jawa Barat** (koordinat `-6.3263889, 108.3200000`).
+- **Titik Pembeli (Marker Biru)**: Sebaran titik tujuan pengiriman di berbagai kota di Indonesia.
+- **Pengukuran Jarak Otomatis**: Ketika titik pembeli diklik, sistem otomatis **menarik garis lurus (polyline)** dari Indramayu ke alamat penerima dan menampilkan kalkulasi jarak dalam satuan kilometer (**km**) menggunakan algoritma *Haversine*.
+- **Live Coordinate Inspector**: Klik pada area peta mana pun untuk mendapatkan angka Latitude & Longitude secara *real-time*.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## 🛠️ Spesifikasi Teknologi
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **Framework**: Laravel 11 (PHP 8.2+)
+- **Database**: MySQL 8.0 (XAMPP Windows)
+- **Database Name**: `kel3`
+- **Peta Digital**: Leaflet.js 1.9.4 & OpenStreetMap Tiles
+- **Tipografi**: Plus Jakarta Sans, DM Sans, & Manrope
+- **Pengujian**: PHPUnit / Laravel Feature & Unit Tests
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## ⚙️ Panduan Instalasi & Menjalankan Proyek
 
-## Security Vulnerabilities
+### 1. Kloning Repository
+```bash
+git clone https://github.com/skirdrax/manusia-pilihan-tuhan.git
+cd manusia-pilihan-tuhan
+git checkout liyah
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 2. Konfigurasi Environment
+Pastikan file `.env` sudah sesuai dengan database MySQL Anda:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=kel3
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## License
+### 3. Migrasi & Seeding Data Riil
+Jalankan migrasi dan seeder untuk mengisi seluruh data awal (user, kurir, paket berkoordinat, obat herbal, dan region):
+```bash
+php artisan migrate:fresh --seed
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 4. Menjalankan Server Lokal
+```bash
+php artisan serve
+```
+Buka browser pada: `http://127.0.0.1:8000` (atau lewat Apache XAMPP di `http://localhost/kel-3-intermediate3/public`).
+
+---
+
+## 🔑 Kredensial Akun Pengujian
+
+| Peran (Role) | Email | Kata Sandi |
+|:---|:---|:---|
+| **Admin** | `admin@kel3.test` | `password` |
+| **Kurir 1** | `kurir1@kel3.test` | `password` |
+| **Kurir 2** | `kurir2@kel3.test` | `password` |
+| **User Pelanggan** | `user@kel3.test` | `password` |
+
+---
+
+## 🧪 Menjalankan Automated Test
+```bash
+php artisan test
+```
+*Seluruh pengujian unit dan alur kerja apotek dipastikan lulus (100% PASS).*
+
+---
+&copy; 2026 **Kelompok 3** — Rekayasa Perangkat Lunak / Web Programming.
