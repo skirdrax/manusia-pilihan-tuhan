@@ -1,0 +1,12 @@
+<div class="form-grid">
+    <div class="field"><label for="sku">SKU <span>*</span></label><input id="sku" name="sku" value="{{ old('sku', $medicine->sku ?? '') }}" maxlength="40" required placeholder="Contoh: OB-001">@error('sku')<small class="field-error">{{ $message }}</small>@enderror</div>
+    <div class="field"><label for="name">Nama obat <span>*</span></label><input id="name" name="name" value="{{ old('name', $medicine->name ?? '') }}" required placeholder="Nama produk obat">@error('name')<small class="field-error">{{ $message }}</small>@enderror</div>
+    <div class="field"><label for="category">Kategori</label><input id="category" name="category" value="{{ old('category', $medicine->category ?? '') }}" placeholder="Contoh: Analgesik"></div>
+    <div class="field"><label for="unit">Satuan <span>*</span></label><input id="unit" name="unit" value="{{ old('unit', $medicine->unit ?? 'pcs') }}" required placeholder="pcs, strip, botol"></div>
+    <div class="field"><label for="purchase_price">Harga beli (Rp) <span>*</span></label><input id="purchase_price" name="purchase_price" type="number" min="0" step="0.01" value="{{ old('purchase_price', $medicine->purchase_price ?? '0.00') }}" required></div>
+    <div class="field"><label for="selling_price">Harga jual (Rp) <span>*</span></label><input id="selling_price" name="selling_price" type="number" min="0.01" step="0.01" value="{{ old('selling_price', $medicine->selling_price ?? '') }}" required></div>
+    <div class="field"><label for="stock">Stok <span>*</span></label><input id="stock" name="stock" type="number" min="0" step="1" value="{{ old('stock', $medicine->stock ?? '0') }}" required></div>
+    <div class="field"><label for="expiration_date">Tanggal kedaluwarsa</label><input id="expiration_date" name="expiration_date" type="date" value="{{ old('expiration_date', isset($medicine) ? $medicine->expiration_date?->format('Y-m-d') : '') }}"></div>
+    <div class="field field-wide"><label for="description">Catatan</label><textarea id="description" name="description" rows="3" placeholder="Informasi tambahan (opsional)">{{ old('description', $medicine->description ?? '') }}</textarea></div>
+</div>
+<div class="form-footer"><a class="button button-light" href="{{ route('medicines.index') }}">Batal</a><button class="button button-primary" type="submit">{{ $submitLabel }}</button></div>
