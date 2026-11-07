@@ -46,19 +46,27 @@ class PaketController extends Controller
     }
 
     /**
-     * Form tambah paket baru
+     * Form tambah paket baru (Khusus Admin)
      */
     public function create(): View
     {
+        if (auth()->user()->role === 'user') {
+            abort(403, 'Akses ditolak: Pelanggan tidak memiliki izin menambah paket.');
+        }
+
         $kurirs = Kurir::orderBy('nama')->get();
         return view('paket.create', compact('kurirs'));
     }
 
     /**
-     * Simpan paket baru ke database
+     * Simpan paket baru ke database (Khusus Admin)
      */
     public function store(Request $request): RedirectResponse
     {
+        if (auth()->user()->role === 'user') {
+            abort(403, 'Akses ditolak: Pelanggan tidak memiliki izin menambah paket.');
+        }
+
         $validated = $request->validate([
             'no_resi'       => ['required', 'string', 'max:30', 'unique:paket,no_resi'],
             'pengirim'      => ['required', 'string', 'max:100'],
@@ -76,19 +84,27 @@ class PaketController extends Controller
     }
 
     /**
-     * Form edit paket
+     * Form edit paket (Khusus Admin & Kurir)
      */
     public function edit(Paket $paket): View
     {
+        if (auth()->user()->role === 'user') {
+            abort(403, 'Akses ditolak: Pelanggan tidak memiliki izin mengubah paket.');
+        }
+
         $kurirs = Kurir::orderBy('nama')->get();
         return view('paket.edit', compact('paket', 'kurirs'));
     }
 
     /**
-     * Update paket
+     * Update paket (Khusus Admin & Kurir)
      */
     public function update(Request $request, Paket $paket): RedirectResponse
     {
+        if (auth()->user()->role === 'user') {
+            abort(403, 'Akses ditolak: Pelanggan tidak memiliki izin mengubah paket.');
+        }
+
         $validated = $request->validate([
             'no_resi'       => ['required', 'string', 'max:30', 'unique:paket,no_resi,' . $paket->id],
             'pengirim'      => ['required', 'string', 'max:100'],
@@ -106,14 +122,17 @@ class PaketController extends Controller
     }
 
     /**
-     * Hapus paket
+     * Hapus paket (Khusus Admin)
      */
     public function destroy(Paket $paket): RedirectResponse
     {
+        if (auth()->user()->role !== 'admin') {
+            abort(403, 'Akses ditolak: Hanya Admin yang dapat menghapus paket.');
+        }
+
         $noResi = $paket->no_resi;
         $paket->delete();
 
         return redirect()->route('paket.index')->with('success', 'Paket ' . $noResi . ' berhasil dihapus.');
     }
 }
-

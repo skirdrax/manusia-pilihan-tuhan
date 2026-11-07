@@ -6,9 +6,11 @@ use App\Http\Controllers\GisController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PaketController;
 use App\Http\Controllers\SaleController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-// Guest Routes (Login Pelanggan & Register Pelanggan)
+// Guest Routes (Login default Admin & Register)
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
@@ -17,14 +19,33 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
 });
 
-// Portal Login Khusus Petugas (Admin & Kurir) - Bisa diakses saat butuh masuk petugas
-Route::get('/login-staff', [AuthController::class, 'showStaffLogin'])->name('login.staff');
-Route::post('/login-staff', [AuthController::class, 'staffLogin'])->name('login.staff.submit');
-
-// Authenticated Routes (Dashboard, Operasional Herbal & GIS)
+// Authenticated Routes
 Route::middleware('auth')->group(function () {
-    // Dashboard Utama (otomatis mendeteksi role user, kurir, admin)
+    // Dashboard Utama
     Route::get('/', DashboardController::class)->name('dashboard');
+
+    // Shortcut Switch di Topbar Kanan Atas:
+    // 1. Admin ingin melihat tampilan Pelanggan
+    Route::get('/view-as-customer', function () {
+        $customer = User::where('role', 'user')->first();
+        if ($customer) {
+            Auth::login($customer);
+            session()->regenerate();
+            return redirect()->route('dashboard')->with('success', 'Beralih ke tampilan Portal Pelanggan.');
+        }
+        return back();
+    })->name('login.customer.view');
+
+    // 2. Dari Pelanggan kembali ke Admin
+    Route::get('/back-to-admin', function () {
+        $admin = User::where('role', 'admin')->first();
+        if ($admin) {
+            Auth::login($admin);
+            session()->regenerate();
+            return redirect()->route('dashboard')->with('success', 'Kembali ke Dashboard Admin.');
+        }
+        return back();
+    })->name('login.staff.back');
 
     // Manajemen Obat Herbal (CRUD)
     Route::resource('medicines', MedicineController::class)->except('show');
@@ -35,10 +56,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
     Route::get('/sales/{sale}', [SaleController::class, 'show'])->name('sales.show');
 
-    // Manajemen Pengiriman Paket Herbal (CRUD Lengkap Tambah, Edit, Hapus)
+    // Manajemen Pengiriman Paket Herbal (CRUD Lengkap)
     Route::resource('paket', PaketController::class)->except('show');
 
-    // Peta GIS Distribusi & Pengiriman Herbal (Leaflet dengan Titik Indramayu & Jarak)
+    // Peta GIS Distribusi (Khusus Admin & Kurir)
     Route::get('/gis', [GisController::class, 'index'])->name('gis.index');
     Route::get('/api/gis/points', [GisController::class, 'points'])->name('api.gis.points');
     Route::get('/api/gis/regions', [GisController::class, 'regions'])->name('api.gis.regions');

@@ -12,10 +12,14 @@ use Illuminate\View\View;
 class GisController extends Controller
 {
     /**
-     * Tampilkan halaman Peta GIS Pengiriman Obat Herbal & Paket
+     * Tampilkan halaman Peta GIS Pengiriman Herbal (Khusus Admin & Kurir)
      */
     public function index(Request $request): View
     {
+        if (auth()->user()->role === 'user') {
+            abort(403, 'Akses ditolak: Peta geospasial GIS hanya dapat diakses oleh Admin dan Kurir.');
+        }
+
         $status = $request->query('status');
         $kurirId = $request->query('kurir_id');
 
@@ -73,4 +77,3 @@ class GisController extends Controller
         return response()->json($regions);
     }
 }
-

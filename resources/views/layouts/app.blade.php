@@ -59,7 +59,7 @@
                     </a>
                 </nav>
             @else
-                <!-- Menu Bersih untuk User Pelanggan -->
+                <!-- Menu Bersih untuk User Pelanggan (Tanpa Peta GIS & Tanpa Manajemen) -->
                 <div class="nav-label">LAYANAN PELANGGAN</div>
                 <nav class="main-nav" aria-label="Navigasi pelanggan">
                     <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
@@ -67,9 +67,6 @@
                     </a>
                     <a class="nav-link {{ request()->routeIs('paket.*') ? 'active' : '' }}" href="{{ route('paket.index') }}">
                         <span class="nav-icon">📦</span> Lacak Paket Saya
-                    </a>
-                    <a class="nav-link {{ request()->routeIs('gis.*') ? 'active' : '' }}" href="{{ route('gis.index') }}">
-                        <span class="nav-icon">🗺</span> Peta Ekspedisi GIS
                     </a>
                 </nav>
             @endif
@@ -99,17 +96,20 @@
                 <div class="breadcrumb">Obat Herbal <span>/</span> @yield('section', 'Ringkasan')</div>
                 
                 <div style="display: flex; align-items: center; gap: 14px;">
-                    <!-- Tombol Masuk Petugas (Admin / Kurir) di Kanan Atas Khusus Dashboard User -->
+                    <!-- Tombol Masuk / Beralih Mode di Kanan Atas Topbar -->
                     @auth
-                        @if (auth()->user()->role === 'user')
-                            <a href="{{ route('login.staff') }}" class="button button-light" style="min-height: 32px; padding: 0 12px; font-size: 11px; font-weight: 700; color: #176b53; border-color: #c2e2d3; background: #f0f7f3; display: inline-flex; align-items: center; gap: 6px;">
-                                <span>🔐</span>
-                                <span>Login Admin / Kurir</span>
+                        @if (auth()->user()->role === 'admin')
+                            <!-- Di Akun Admin: Ada tombol cepat lihat portal Pelanggan -->
+                            <a href="{{ route('login.customer.view') }}" class="button button-light" style="min-height: 32px; padding: 0 12px; font-size: 11px; font-weight: 700; color: #176b53; border-color: #c2e2d3; background: #f0f7f3; display: inline-flex; align-items: center; gap: 6px;">
+                                <span>🌿</span>
+                                <span>Lihat Portal Pelanggan</span>
                             </a>
-                        @else
-                            <div style="display: inline-flex; align-items: center; gap: 6px; background: #e8f3ed; padding: 4px 10px; border-radius: 4px; border: 1px solid #c2e2d3; font-size: 11px; font-weight: 700; color: #176b53;">
-                                <span>{{ auth()->user()->role === 'admin' ? '🛡️ Portal Admin' : '🚚 Portal Kurir' }}</span>
-                            </div>
+                        @elseif (auth()->user()->role === 'user')
+                            <!-- Di Akun User: Tombol kembali ke Admin -->
+                            <a href="{{ route('login.staff.back') }}" class="button button-light" style="min-height: 32px; padding: 0 12px; font-size: 11px; font-weight: 700; color: #176b53; border-color: #c2e2d3; background: #f0f7f3; display: inline-flex; align-items: center; gap: 6px;">
+                                <span>🛡️</span>
+                                <span>Kembali ke Admin</span>
+                            </a>
                         @endif
                     @endauth
 
