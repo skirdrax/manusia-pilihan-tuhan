@@ -12,7 +12,7 @@ use Illuminate\Validation\Rules\Password;
 class AuthController extends Controller
 {
     /**
-     * Tampilkan form login
+     * Tampilkan form login umum (fokus untuk User Pelanggan)
      */
     public function showLogin()
     {
@@ -24,7 +24,49 @@ class AuthController extends Controller
     }
 
     /**
-     * Proses autentikasi login
+     * Tampilkan form login khusus Admin & Kurir
+     */
+    public function showStaffLogin()
+    {
+        return view('auth.login-staff');
+    }
+
+    /**
+     * Proses autentikasi khusus Admin & Kurir
+     */
+    public function staffLogin(Request $request)
+    {
+        $credentials = $request->validate([
+            'email'    => ['required', 'string', 'email'],
+            'password' => ['required', 'string'],
+        ]);
+
+        $remember = $request->boolean('remember');
+
+        if (Auth::attempt($credentials, $remember)) {
+            $user = Auth::user();
+
+            if (!in_array($user->role, ['admin', 'kurir'])) {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Halaman ini khusus untuk akun Admin dan Kurir. Silakan login di portal pelanggan.',
+                ]);
+            }
+
+            $request->session()->regenerate();
+            $roleName = ucfirst($user->role);
+
+            return redirect()->route('dashboard')
+                ->with('success', "Selamat datang kembali, {$roleName} ({$user->name})!");
+        }
+
+        return back()->withErrors([
+            'email' => 'Email atau kata sandi admin/kurir tidak cocok.',
+        ])->onlyInput('email');
+    }
+
+    /**
+     * Proses autentikasi login umum
      */
     public function login(Request $request)
     {
@@ -95,7 +137,7 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         return redirect()->route('dashboard')
-            ->with('status', 'Akun berhasil dibuat. Selamat datang di LogiTrack!');
+            ->with('status', 'Akun berhasil dibuat. Selamat datang di Apotek Herbal!');
     }
 
     /**
@@ -112,4 +154,3 @@ class AuthController extends Controller
             ->with('status', 'Anda telah berhasil keluar.');
     }
 }
-
